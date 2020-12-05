@@ -22,9 +22,8 @@ SOURCES += \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
-    map.cpp \
     mysql.cpp \
-    painterarea.cpp \
+    scribblearea.cpp \
     sigin.cpp \
     testmainwindow.cpp \
     welcom.cpp
@@ -33,9 +32,8 @@ HEADERS += \
     base.h \
     login.h \
     mainwindow.h \
-    map.h \
     mysql.h \
-    painterarea.h \
+    scribblearea.h \
     sigin.h \
     testmainwindow.h \
     welcom.h

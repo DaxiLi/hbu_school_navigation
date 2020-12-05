@@ -1,4 +1,4 @@
-
+#include <QString>
 #include <QWidget>
 #include <QPropertyAnimation>
 
@@ -30,4 +30,5 @@ bool check_username(QString S){
     if (S.length() > 20){
         return false;
     }
+    return true;
 }
