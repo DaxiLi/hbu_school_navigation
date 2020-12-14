@@ -1,7 +1,13 @@
 #include <QtDebug>
+#include <QMessageBox>
+
+
 #include "sigin.h"
 #include "ui_sigin.h"
 #include "base.h"
+#include "mysql.h"
+#include "main.h"
+#include "welcom.h"
 
 Sigin::Sigin(QWidget *parent) :
     QDialog(parent),
@@ -46,25 +52,49 @@ void Sigin::on_sigin_confirm_clicked()
     qDebug() << "username:" << username;
     qDebug() << "passwd:" <<passwd;
     qDebug() << "confirm_passwd:" <<confirm_passwd;
-    if (!passwd.length() || !username.length() || !confirm_passwd.length()){
+    if (!username.length()){
         ui->sigin_notice->setText("");
         widgetShake(this,5);
-        qDebug() << "输入不全";
+        qDebug() << "请输入用户名！";
+        return;
+    }else if(passwd.length() == 0){
+        ui->sigin_notice->setText("请输入密码!");
+        widgetShake(this,5);
+        return;
     }else if (username.length() > 20){
         ui->sigin_notice->setText("用户名过长！");
         widgetShake(this,5);
         qDebug() << "用户名过长！";
+        return;
     }else if (QString::compare(passwd,confirm_passwd) != 0) {
         ui->sigin_notice->setText("两次输入密码不相同!");
         widgetShake(this,5);
         qDebug() << "两次密码不同！";
+        return;
     }else if (passwd.length()  > 16) {
         ui->sigin_notice->setText("密码长度过长，16位以内");
         widgetShake(this,5);
         qDebug() << "密码长度过长";
-    }else {
-
+        return;
     }
+
+    if (!check_string(username) || !check_string(passwd)){
+        qDebug() << "非法输入!";
+        ui->sigin_notice->setText("请输入字母、数字或下划线以内字符！");
+        widgetShake(this,5);
+        return;
+    }
+
+    MySQL sql ;
+    if (sql.add_user(username,passwd,"0")){
+        QMessageBox::about(this,"成功","注册成功，正在以：" + username + " 身份登录...");
+        start.set_user(username);
+        start.close_welcom();
+        start.open_mainwindow();
+        close();
+        return;
+    }
+    QMessageBox::about(this,"失败","啊哦，出问题了！");
 }
 
 /**

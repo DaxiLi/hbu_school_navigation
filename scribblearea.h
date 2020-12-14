@@ -72,8 +72,12 @@ public:
     bool isModified() const { return modified; }
     QColor penColor() const { return myPenColor; }
     int penWidth() const { return myPenWidth; }
+    void add_right_click_menu();
+    void ad_menu_2();
+    void drawPointAt(const QPoint &pos);
 
 public slots:
+    void onTaskBoxContextMenuEvent();
     void clearImage();
     void print();
 

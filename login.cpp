@@ -1,6 +1,8 @@
 #include "login.h"
 #include "ui_login.h"
 #include "base.h"
+#include "mysql.h"
+#include "main.h"
 
 Login::Login(QWidget *parent) :
     QDialog(parent),
@@ -23,10 +25,33 @@ void Login::on_login_cancel_clicked()
 
 void Login::on_login_confirm_clicked()
 {
-    ui->login_notice->setText("密码错误!");
-   // ui->login_notice->getContentsMargins()
-    widgetShake(this,5);
-
+    QString username = ui->login_username->text();
+    QString passwd = ui->login_passwd->text();
+    if (!check_string(username) || !check_string(passwd)){
+        qDebug() << "非法输入!";
+        ui->login_notice->setText("请输入字母、数字或下划线以内字符！");
+        widgetShake(this,5);
+        return;
+    }
+    if(passwd.length() == 0){
+        ui->login_notice->setText("请输入密码!");
+        widgetShake(this,5);
+        return;
+    }
+    MySQL sql ;
+    QString get_passwd = sql.get_user_passwd(username);
+    if (get_passwd.length() == 0){
+        ui->login_notice->setText("用户不存在!");
+        widgetShake(this,5);
+    }else if(QString::compare(get_passwd,passwd) != 0   ){
+        ui->login_notice->setText("密码错误!");
+        widgetShake(this,5);
+    }else {
+        start.set_user(username);
+        start.close_welcom();
+        start.open_mainwindow();
+        close();
+    }
 }
 
 

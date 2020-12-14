@@ -25,7 +25,18 @@ void widgetShake(QWidget *pWidget, int nRange)
 
 }
 
-
+bool check_string(QString S){
+    foreach(QChar c,S){
+        if ( (c >= '0' && c <= '9') ||
+             (c >= 'A' && c <= 'Z') ||
+             (c >= 'a' && c <= 'z') ||
+             c == '_'){
+        }else {
+            return false;
+        }
+    }
+    return true;
+}
 bool check_username(QString S){
     if (S.length() > 20){
         return false;

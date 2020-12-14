@@ -4,6 +4,7 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QString>
 
 
 class MySQL
@@ -13,6 +14,8 @@ public:
     MySQL();
     ~MySQL();
      void init();
+     bool add_user(QString name,QString passwd,QString is_admin);
+     QString get_user_passwd(QString username);
 };
 
 #endif // MYSQL_H

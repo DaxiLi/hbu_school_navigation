@@ -22,19 +22,24 @@ SOURCES += \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
+    mymap.cpp \
     mysql.cpp \
     scribblearea.cpp \
     sigin.cpp \
+    start.cpp \
     testmainwindow.cpp \
     welcom.cpp
 
 HEADERS += \
     base.h \
     login.h \
+    main.h \
     mainwindow.h \
+    mymap.h \
     mysql.h \
     scribblearea.h \
     sigin.h \
+    start.h \
     testmainwindow.h \
     welcom.h
 
@@ -42,6 +47,7 @@ FORMS += \
     login.ui \
     mainwindow.ui \
     map.ui \
+    mymap.ui \
     sigin.ui \
     testmainwindow.ui \
     welcom.ui

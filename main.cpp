@@ -1,24 +1,50 @@
-#include "mainwindow.h"
-#include "welcom.h"
-#include "mysql.h"
+#include "start.h"
 
 #include <QApplication>
 #include <qdebug.h>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QChar>
+#include <QLineEdit>
 
+Start start;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
-//    Welcom W;
+    Start start;
+
+    //qDebug() << QString::compare("a","a");
+
+//    MySQL *s = new MySQL();
+//    s->add_user("aja","pass","0");
+//    s->add_user("moogila","lplp","0");
+//    qDebug()<< "aja passwd:" << s->get_user_passwd("aja");
+//    qDebug() << "lk passwd:" <<s->get_user_passwd("lk");
+//    delete s;
+
+//    int s[20] = {'0','9','Z','z','_','0','!','@','#','$','%','^','&','*','('};
+//    for (int i = 0;i < 20;i++){
+//        qDebug() << s[i];
+//    }
+//    for (int i = '0';i < 'z';i++){
+//        qDebug() << i;
+//        char t = i;
+//        qDebug() << ":" << t;
+//    }
+//    QString S = "asdfghjkl";
+//    foreach(QChar a,S){
+//        qDebug() << a;
+//    }
+
+
+
+//    MainWindow W;
 //    W.show();
+//    MyMap *M = new MyMap();
+//    M->show();
 
 
-    MySQL *s = new MySQL();
-    delete s;
 
     /***
        QSqlDatabase database;
@@ -96,7 +122,7 @@ int main(int argc, char *argv[])
 //       {
 //           qDebug()<<sql_query.lastError();
 //       }
-//       else
+//       elses
 //       {
 //           qDebug()<<"deleted!";
 //       }

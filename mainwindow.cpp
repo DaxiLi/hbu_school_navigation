@@ -4,8 +4,10 @@
 #include "login.h"
 #include "welcom.h"
 #include "ui_testmainwindow.h"
+#include "scribblearea.h"
 
 #include <QLabel>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -14,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     Welcom *W = new Welcom();
     W->show();
+    ScribbleArea *s = new ScribbleArea();
+    s->openImage(":/map/map/all.png");
+    setCentralWidget(s);
 
 //
 //    this->setWindowTitle("地图");
@@ -28,5 +33,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
 
 

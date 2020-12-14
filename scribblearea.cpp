@@ -48,10 +48,22 @@
 **
 ****************************************************************************/
 
+
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "sigin.h"
+#include "login.h"
+#include "welcom.h"
+#include "ui_testmainwindow.h"
+#include "scribblearea.h"
+
+#include <QLabel>
+#include <QMessageBox>
 #include "scribblearea.h"
 
 #include <QMouseEvent>
 #include <QPainter>
+#include <QtDebug>
 
 #if defined(QT_PRINTSUPPORT_LIB)
 #include <QtPrintSupport/qtprintsupportglobal.h>
@@ -131,23 +143,43 @@ void ScribbleArea::clearImage()
 void ScribbleArea::mousePressEvent(QMouseEvent *event)
 //! [11] //! [12]
 {
+    qDebug() << "mousePressEvent";
+    qDebug() << "x:" << event->x() << ",y:" << event->y();
+
     if (event->button() == Qt::LeftButton) {
+        drawLineTo(event->pos());
         lastPoint = event->pos();
         scribbling = true;
+    }else if (event->button() == Qt::RightButton){
+        //ad_menu_2();
+//        QPoint tep = lastPoint;
+//        lastPoint = event->pos();
+//        setPenWidth(10);
+//        drawLineTo(event->pos());
+//        //setPenWidth(1);
+//        lastPoint = tep;
+        drawPointAt(event->pos());
+        add_right_click_menu();
     }
+
 }
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
+    qDebug() << "mouseMoveEvent";
     if ((event->buttons() & Qt::LeftButton) && scribbling)
         drawLineTo(event->pos());
 }
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 {
+    qDebug() << "mouseRealseEvent";
     if (event->button() == Qt::LeftButton && scribbling) {
+        qDebug() << "event->button left";
         drawLineTo(event->pos());
         scribbling = false;
+    }else if (event->button() == Qt::RightButton){
+
     }
 }
 
@@ -183,6 +215,7 @@ void ScribbleArea::drawLineTo(const QPoint &endPoint)
     painter.setPen(QPen(myPenColor, myPenWidth, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
+    painter.drawPoint(endPoint);
     modified = true;
 
     int rad = (myPenWidth / 2) + 2;
@@ -191,6 +224,20 @@ void ScribbleArea::drawLineTo(const QPoint &endPoint)
     lastPoint = endPoint;
 }
 //! [18]
+
+void ScribbleArea::drawPointAt(const QPoint &pos){
+    QPainter painter(&image);
+    painter.setPen(QPen(myPenColor, 5, Qt::SolidLine, Qt::RoundCap,
+                        Qt::RoundJoin));
+    painter.drawPoint(pos);
+    modified = true;
+
+    int rad = (myPenWidth / 2) + 2;
+    update();
+//    update(QRect())
+//    update(QRect(lastPoint, endPoint).normalized()
+//                                     .adjusted(-rad, -rad, +rad, +rad));
+}
 
 //! [19]
 void ScribbleArea::resizeImage(QImage *image, const QSize &newSize)
@@ -227,3 +274,107 @@ void ScribbleArea::print()
 #endif // QT_CONFIG(printdialog)
 }
 //! [22]
+
+
+void ScribbleArea::ad_menu_2(){
+    static QMenu *menu = new (QMenu);
+        menu->setTitle("自定义的菜单");
+        static QList<QAction *> *list = nullptr ;
+        if (list == nullptr) {
+            list = new QList<QAction*>;
+            list->append(new QAction(QIcon("icon.jpg"), "hello world ", this));
+
+            list->append(new QAction(QIcon(), "hello  ", this));
+            menu->setParent(this);
+
+            auto action = new QAction(this);
+            // 设置icon的图标
+           // action->setIcon(QIcon(":/contentMenuEvent/Resources/icon.jpg"));
+            //设置显示图标在icon 上
+            action->setIconVisibleInMenu(true);
+            action->setText("Qt积木笔记");
+            // 同样处理 点击 信号. 跳转到 Qt积木笔记
+            connect(action, SIGNAL(triggered(bool)), this, SLOT(QtjiMu()));
+            // 将这个action append 到list
+            list->append(action);
+            menu->addActions(*list);
+
+        }
+        menu->exec(cursor().pos());
+        menu->show();
+}
+
+void ScribbleArea::add_right_click_menu(){
+    QMenu *pMenu = new QMenu(this);
+    QAction *pNewTask = new QAction(tr("设为起点"), this);
+    QAction *pEditTask = new QAction(tr("设为终点"), this);
+    QAction *pDeleteTask = new QAction(tr("删除路线"), this);
+
+//    QAction *pToolRenName = new QAction(tr("改名工具"), this);
+//    QAction *pToolEdot = new QAction(tr("设置工具"), this);
+//    QAction *pToolDelete = new QAction(tr("删除工具"), this);
+
+    //1:新建任务 2:设置任务 3:删除任务 4:改名工具 5:设置工具 6:删除工具
+    pNewTask->setData(1);
+    pEditTask->setData(2);
+    pDeleteTask ->setData(3);
+//    pToolRenName->setData(4);
+//    pToolEdot->setData(5);
+//    pToolDelete ->setData(6);
+
+    //把QAction对象添加到菜单上
+    pMenu->addAction(pNewTask);
+    pMenu->addAction(pEditTask);
+    pMenu->addAction(pDeleteTask);
+//    pMenu->addAction(pToolRenName);
+//    pMenu->addAction(pToolEdot);
+//    pMenu->addAction(pToolDelete);
+
+    //连接鼠标右键点击信号
+    connect(pNewTask, SIGNAL(triggered()), this, SLOT(onTaskBoxContextMenuEvent()));
+    connect(pEditTask, SIGNAL(triggered()), this, SLOT(onTaskBoxContextMenuEvent()));
+    connect(pDeleteTask, SIGNAL(triggered()), SLOT(onTaskBoxContextMenuEvent()));
+//    connect(pToolRenName, SIGNAL(triggered()), this, SLOT(onTaskBoxContextMenuEvent()));
+//    connect(pToolEdot, SIGNAL(triggered()), this, SLOT(onTaskBoxContextMenuEvent()));
+//    connect(pToolDelete, SIGNAL(triggered()), SLOT(onTaskBoxContextMenuEvent()));
+
+    //在鼠标右键点击的地方显示菜单
+    pMenu->exec(cursor().pos());
+
+    //释放内存
+    QList<QAction*> list = pMenu->actions();
+    foreach (QAction* pAction, list) delete pAction;
+    delete pMenu;
+}
+
+void ScribbleArea::onTaskBoxContextMenuEvent()
+{
+    QAction *pEven = qobject_cast<QAction *>(this->sender()); //this->sender()就是发信号者 QAction
+
+    //获取发送信息类型 1:新建任务 2:设置任务 3:删除任务 4:改名工具 5:设置工具 6:删除工具
+    int iType = pEven->data().toInt();
+
+    switch (iType)
+    {
+    case 1:
+        QMessageBox::about(this, "tip", pEven->text());
+        break;
+    case 2:
+        QMessageBox::about(this, "tip", pEven->text());
+        break;
+    case 3:
+        QMessageBox::about(this, "tip", pEven->text());
+        break;
+    case 4:
+        QMessageBox::about(this, "tip", pEven->text());
+        break;
+    case 5:
+        QMessageBox::about(this, "tip", pEven->text());
+        break;
+    case 6:
+        QMessageBox::about(this, "tip", pEven->text());
+        break;
+    default:
+        break;
+    }
+}

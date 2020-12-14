@@ -10,6 +10,12 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>471</width>
+    <height>300</height>
+   </size>
+  </property>
   <property name="focusPolicy">
    <enum>Qt::ClickFocus</enum>
   </property>
