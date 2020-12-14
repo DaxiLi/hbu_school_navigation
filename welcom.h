@@ -12,8 +12,12 @@ class Welcom : public QWidget
     Q_OBJECT
 
 public:
+    bool close_self = false;
     explicit Welcom(QWidget *parent = nullptr);
     ~Welcom();
+
+//signals:
+    void close_welcom(){exit(0);}
 
 private:
     Ui::Welcom *ui;

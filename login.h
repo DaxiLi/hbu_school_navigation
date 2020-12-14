@@ -17,11 +17,8 @@ public:
 
 private slots:
     void on_login_cancel_clicked();
-
     void on_login_confirm_clicked();
-
     void on_iforget_linkHovered(const QString &link);
-
     void on_iforget_linkActivated(const QString &link);
 
 private:

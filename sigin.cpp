@@ -88,9 +88,9 @@ void Sigin::on_sigin_confirm_clicked()
     MySQL sql ;
     if (sql.add_user(username,passwd,"0")){
         QMessageBox::about(this,"成功","注册成功，正在以：" + username + " 身份登录...");
-        start.set_user(username);
-        start.close_welcom();
-        start.open_mainwindow();
+        start->set_user(username);
+        start->close_welcom();
+        start->open_mainwindow();
         close();
         return;
     }

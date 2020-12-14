@@ -14,19 +14,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    Welcom *W = new Welcom();
-    W->show();
     ScribbleArea *s = new ScribbleArea();
+    ui->scrollArea->setWidget(s);
     s->openImage(":/map/map/all.png");
-    setCentralWidget(s);
+    setAttribute(Qt::WA_DeleteOnClose);
 
-//
-//    this->setWindowTitle("地图");
-//    this->setWindowIcon(QIcon(":/src/icon/src/img/logo_mini.jpg"));
-    //ui->login_button->setFlat(true);
-   // ui->sigin_buttom->setFlat(true);
-   // QImage *image= new QImage("qrc:/src/icon/logo");
-    //ui->logo->setPixmap(QPixmap::fromImage(*image));
 }
 
 MainWindow::~MainWindow()

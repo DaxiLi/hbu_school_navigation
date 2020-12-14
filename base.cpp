@@ -1,6 +1,8 @@
 #include <QString>
 #include <QWidget>
 #include <QPropertyAnimation>
+#include <QtMath>
+#include <QDebug>
 
 void widgetShake(QWidget *pWidget, int nRange)
 {
@@ -17,10 +19,7 @@ void widgetShake(QWidget *pWidget, int nRange)
     for(int i = 1; i < nShakeCount; i++){
         nRange = i%2 ? -nRange : nRange;
         pAnimation->setKeyValueAt(nStep*i,QRect(QPoint(nX + nRange,nY),pWidget->size()));
-       // pAnimation->setKeyValueAt(nStep*i,QRect(QPoint(nX - nRange,nY),pWidget->size()));
-        //pAnimation->setEndValue(QRect(QPoint(nX - nRange,nY),pWidget->size()));
     }
-   // pAnimation->setKeyValueAt(nStep,QRect(QPoint(nX,nY),pWidget->size()));
     pAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 
 }
@@ -42,4 +41,20 @@ bool check_username(QString S){
         return false;
     }
     return true;
+}
+
+int get_long(QPoint a,QPoint b){
+    int val = ((a.x() - b.x()) *  (a.x() - b.x()) ) + ((a.y() - b.y()) * (a.y() - b.y()));
+    qDebug() << val;
+    qDebug() << sqrt(val);
+    return (int)sqrt(val);
+}
+
+QString get_dis(int a,int b,int c,int d){
+     int val = ((a - c) * (a - c) ) + ((b - d) * (b - d));
+     return QString::number((int)sqrt(val));
+}
+int get_dis_int(int a,int b,int c,int d){
+     int val = ((a - c) * (a - c) ) + ((b - d) * (b - d));
+     return (int)sqrt(val);
 }

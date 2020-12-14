@@ -86,4 +86,10 @@
     <qresource prefix="/map">
         <file>map/all.png</file>
     </qresource>
+    <qresource prefix="/sql">
+        <file>src/NEAR.sql</file>
+        <file>src/POINT.sql</file>
+        <file>src/USERS.sql</file>
+        <file>src/MyDataBase.db</file>
+    </qresource>
 </RCC>

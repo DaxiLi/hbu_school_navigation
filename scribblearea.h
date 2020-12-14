@@ -56,10 +56,19 @@
 #include <QPoint>
 #include <QWidget>
 
+#include "point.h"
+
 //! [0]
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
+
+public:
+    Point *lastMyPoint = NULL;
+    Point *thisMyPoint = NULL;
+    QImage *lastRect = NULL;
+    bool draw_line = false;
+    bool setStrat = false;
 
 public:
     ScribbleArea(QWidget *parent = nullptr);
@@ -68,6 +77,19 @@ public:
     bool saveImage(const QString &fileName, const char *fileFormat);
     void setPenColor(const QColor &newColor);
     void setPenWidth(int newWidth);
+    void add_point();
+    void delete_point();
+    void update_about();
+    void update_name();
+    void t2_build();
+    void drawAllLineFromSQL();
+    void drawAllLineFromLib();
+    void delete_line();
+    void setStartPoint();
+    void setEndPoint();
+    void showLine(QPoint A,QPoint B);
+    void drawtextAt(QPoint pos,QString s);
+
 
     bool isModified() const { return modified; }
     QColor penColor() const { return myPenColor; }
@@ -75,6 +97,16 @@ public:
     void add_right_click_menu();
     void ad_menu_2();
     void drawPointAt(const QPoint &pos);
+    void clear_drawPointAt(const QPoint &pos);
+    void get_build_name();
+    void drawLineA2B(const QPoint &startPoint,const QPoint &endPoint);
+    void clear_drawLineA2B(const QPoint &startPoint,const QPoint &endPoint);
+    void drawAllPointFromSQL();
+    void clear_drawAllPointFromSQL();
+    void set_about();
+    void test();
+    QPoint getltPoint(int x1,int y1,int x2,int y2);
+    QPoint getrdPoint(int x1,int y1,int x2,int y2);
 
 public slots:
     void onTaskBoxContextMenuEvent();
@@ -88,8 +120,9 @@ protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
-private:
+public:
     void drawLineTo(const QPoint &endPoint);
+    void clear_drawLineTo(const QPoint &endPoint);
     void resizeImage(QImage *image, const QSize &newSize);
 
     bool modified = false;
@@ -98,6 +131,9 @@ private:
     QColor myPenColor = Qt::blue;
     QImage image;
     QPoint lastPoint;
+    QPoint *startPoint;
+    QPoint *endPoint;
+    bool showmap;
 };
 //! [0]
 

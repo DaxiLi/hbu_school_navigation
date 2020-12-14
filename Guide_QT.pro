@@ -19,11 +19,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     base.cpp \
+    libpoint.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
     mymap.cpp \
     mysql.cpp \
+    point.cpp \
     scribblearea.cpp \
     sigin.cpp \
     start.cpp \
@@ -32,11 +34,13 @@ SOURCES += \
 
 HEADERS += \
     base.h \
+    libpoint.h \
     login.h \
     main.h \
     mainwindow.h \
     mymap.h \
     mysql.h \
+    point.h \
     scribblearea.h \
     sigin.h \
     start.h \

@@ -3,6 +3,7 @@
 #include "base.h"
 #include "mysql.h"
 #include "main.h"
+#include "welcom.h"
 
 Login::Login(QWidget *parent) :
     QDialog(parent),
@@ -10,7 +11,7 @@ Login::Login(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("登录");
-
+   // setAttribute(Qt::WA_DeleteOnClose);
 }
 
 Login::~Login()
@@ -25,6 +26,7 @@ void Login::on_login_cancel_clicked()
 
 void Login::on_login_confirm_clicked()
 {
+
     QString username = ui->login_username->text();
     QString passwd = ui->login_passwd->text();
     if (!check_string(username) || !check_string(passwd)){
@@ -47,9 +49,12 @@ void Login::on_login_confirm_clicked()
         ui->login_notice->setText("密码错误!");
         widgetShake(this,5);
     }else {
-        start.set_user(username);
-        start.close_welcom();
-        start.open_mainwindow();
+        if (QString::compare(username,sql.get_admin_name()) == 0){
+            start->setAdmin(true);
+        }
+        start->set_user(username);
+        start->open_mainwindow();
+        start->close_welcom();
         close();
     }
 }
